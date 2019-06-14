@@ -6,7 +6,8 @@ var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "**REDACTED**",
+//   password: "**REDACTED**",
+  password: "HmYz#4g7p1pH",
   database: "bamazon"
 });
 
@@ -34,13 +35,21 @@ connection.connect(function(err) {
 
 function start(){
     inquirer
-    .prompt({
-        name: "query",
-        type: "input",
-        message: "What is the ID of the product you want to purchase?",
-    })
+    .prompt([
+        {
+            name: "id",
+            type: "input",
+            message: "What is the ID of the product you want to purchase?",
+
+        },
+        {
+            name: "quantity",
+            type: "input",
+            message: "How many would you like purchase?"
+        }
+    ])
     .then(function(answer) {
-        console.log("query for that item:" + answer.query);
+        console.log("item: "+answer.id+"\nquantity: "+answer.quantity);
     });
     
     connection.end();
