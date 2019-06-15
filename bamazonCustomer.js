@@ -52,7 +52,6 @@ function start(){
     ])
     .then(function(answer) {
         var itemQueryId = answer.id
-        console.log("item: "+itemQueryId+"\nquantity: "+answer.quantity);
         connection.query('SELECT * from products WHERE ?', {item_id:answer.id},
         function (error, res) {
             if (error) throw error;
@@ -63,13 +62,13 @@ function start(){
             var stockAfterTrans = stockAmount - orderAmount;
 
             if (stockAmount >= orderAmount){
-                console.log ('there is enough in stock' );
                 connection.query('UPDATE products SET stock_quantity = ? WHERE item_id = ?', [stockAfterTrans, itemQueryId],
                 function (error, res) {
                     if (error) throw error;
                     // console.log(res);
                     console.log('Thank You for shopping with us\nThe total amount of your purchase was: '+ unitPrice * orderAmount );
-                    displayTable();
+                    loop();
+                    // displayTable();
                 });
 
             }else{
@@ -79,6 +78,24 @@ function start(){
             
         });
     });
+};
+
+function loop(){
+    inquirer
+    .prompt({
+      name: "loop",
+      type: "list",
+      message: "Would you like to buy something else?",
+      choices: ["Continue Shopping", "EXIT"]
+    })
+    .then(function(answer) {
     
-    // connection.end();
+        switch(answer.loop){
+            case 'Continue Shopping':
+            return displayTable();
+
+            case 'EXIT':
+            connection.end();
+        };
+    });
 };
