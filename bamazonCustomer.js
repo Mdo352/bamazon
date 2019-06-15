@@ -13,25 +13,7 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     //   console.log("connected as id " + connection.threadId);
-
-    // connection.query(
-    //     'SELECT * FROM products',
-    //   function(err, res) {
-    //     if (err) throw err;
-    //     // console.log(res);
-
-    //     var productsTable = new Table({
-    //         head: ['ID', 'Name', 'Department', 'Price', 'Stock'],
-    //     //   , colWidths: [100]
-    //     });         
-        
-    //     for (var i = 0; i < res.length; i++) {
-    //         productsTable.push( [res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
-    //     }
-    //     console.log(productsTable.toString());
     displayTable();
-        // start();
-    // });
 });
 
 function displayTable (){
@@ -43,7 +25,6 @@ function displayTable (){
 
         var productsTable = new Table({
             head: ['ID', 'Name', 'Department', 'Price', 'Stock'],
-        //   , colWidths: [100]
         });         
         
         for (var i = 0; i < res.length; i++) {
@@ -72,28 +53,27 @@ function start(){
     .then(function(answer) {
         var itemQueryId = answer.id
         console.log("item: "+itemQueryId+"\nquantity: "+answer.quantity);
-        connection.query('SELECT stock_quantity from products WHERE ?', {item_id:answer.id},
+        connection.query('SELECT * from products WHERE ?', {item_id:answer.id},
         function (error, res) {
             if (error) throw error;
-            console.log(res);
+            // console.log(res);
             var stockAmount = res[0].stock_quantity;
-            console.log('stock amount: '+stockAmount);
+            var unitPrice = res[0].price;
             var orderAmount = answer.quantity;
             var stockAfterTrans = stockAmount - orderAmount;
 
             if (stockAmount >= orderAmount){
                 console.log ('there is enough in stock' );
-                console.log("item query id:"+itemQueryId+"\nstockamount:"+stockAmount+"\norder amount:"+orderAmount+"\nafter trans"+stockAfterTrans);
-
                 connection.query('UPDATE products SET stock_quantity = ? WHERE item_id = ?', [stockAfterTrans, itemQueryId],
                 function (error, res) {
                     if (error) throw error;
-                    console.log(res);
+                    // console.log(res);
+                    console.log('Thank You for shopping with us\nThe total amount of your purchase was: '+ unitPrice * orderAmount );
                     displayTable();
                 });
 
             }else{
-                console.log ('not enough in stock');
+                console.log ('Not Enough In Stock');
                 start();
             };
             
