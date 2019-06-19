@@ -30,7 +30,7 @@ function displayTable (){
         for (var i = 0; i < res.length; i++) {
             productsTable.push( [res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
         }
-        console.log(productsTable.toString())
+        console.log(productsTable.toString());
         start();
     });
 };
@@ -51,8 +51,9 @@ function start(){
         }
     ])
     .then(function(answer) {
-        var itemQueryId = answer.id
-        connection.query('SELECT * from products WHERE ?', {item_id:answer.id},
+        var itemQueryId = answer.id;
+        connection.query('SELECT * from products WHERE ?',
+        {item_id:answer.id},
         function (error, res) {
             if (error) throw error;
             // console.log(res);
