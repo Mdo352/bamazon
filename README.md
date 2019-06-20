@@ -10,9 +10,10 @@ In order for you to use this application you must first have [node.js](https://n
 
 ## Built With
 - node.js
-- inquirer
-- mysql
-- cli-table
+- npm
+  - inquirer
+  - mysql
+  - cli-table
 
 
 _This application was created as an assignent for a coding bootcamp. Its purpose was to use npm to query an sql database using node.js_
