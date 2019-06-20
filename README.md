@@ -10,6 +10,7 @@ In order for you to use this application you must first have [node.js](https://n
 
 ## Built With
 - node.js
+- SQL
 - npm
   - inquirer
   - mysql
